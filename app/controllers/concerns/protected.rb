@@ -18,7 +18,11 @@ module Protected
     token = request.env['HTTP_AUTHORIZATION']
     token["Bearer "] = ""
 
-    @access_token = JSON::JWT.decode(token, @@discovery.jwks)
+    begin      
+      @access_token = JSON::JWT.decode(token, @@discovery.jwks)
+    rescue => exception
+      return false
+    end
 
     if @access_token["exp"].to_i < Time.now.to_i
       return false
