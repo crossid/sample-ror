@@ -1,8 +1,19 @@
 spec:
-  name: sample-rails
+  name: sample-ror
   services:
-  - environment_slug: ruby-on-rails
-    git:
-      branch: main
-      repo_clone_url: https://github.com/crossid/sample-rails.git
-    name: sample-rails
+    - name: api-ror
+      environment_slug: ruby-on-rails
+      github:
+        repo: crossid/sample-ror
+        branch: main
+        deploy_on_push: true
+      envs:
+        - key: ISSUER_BASE_URL
+          value: "https://<tenant>.crossid.io/oauth2/"
+        - key: CLIENT_ID
+          value: "<client_id>"
+        - key: CLIENT_SECRET
+          value: "<client_secret>"
+          type: SECRET
+        - key: REDIRECT_URI
+          value: "${_self.PUBLIC_URL}callback"
